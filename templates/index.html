@@ -1,47 +1,31 @@
 {% extends "base.html" %}
 
-{% block title %}
-Página Inicial
-{% endblock %}
-
+{% block title %}Controle de Visitantes{% endblock %}
 
 {% block content %}
 
-<h1>Nome do Projeto</h1>
+<h1>Controle de Visitantes</h1>
 
-<p class="text-muted">
-    Descrição do projeto.
+<p class="lead">
+    Selecione uma das opções abaixo para acessar uma funcionalidade do sistema.
 </p>
 
-
-<div class="row g-3">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-
-                <h5>Funcionalidade 1</h5>
-
-                <p>
-                    Descrição.
-                </p>
-
-                <a href="#" class="btn btn-success">Acessar</a>
-
-            </div>
-        </div>
-    </div>
+<div class="row g-3 justify-content-center">
 
     <div class="col-md-4">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-body">
 
-                <h5>Funcionalidade 2</h5>
+                <h5 class="card-title">Nova Entrada</h5>
 
-                <p>
-                    Descrição.
+                <p class="card-text">
+                    Registre a entrada de um novo visitante.
                 </p>
 
-                <a href="#" class="btn btn-success">Acessar</a>
+                <a href="{{ url_for('nova_entrada') }}"
+                   class="btn btn-success">
+                    Acessar
+                </a>
 
             </div>
         </div>
@@ -49,16 +33,79 @@ Página Inicial
 
 
     <div class="col-md-4">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-body">
 
-                <h5>Funcionalidade 3</h5>
+                <h5 class="card-title">Registrar Saída</h5>
 
-                <p>
-                    Descrição.
+                <p class="card-text">
+                    Registre a saída de um visitante.
                 </p>
 
-                <a href="#" class="btn btn-success">Acessar</a>
+                <a href="{{ url_for('registrar_saida') }}"
+                   class="btn btn-success">
+                    Acessar
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+
+                <h5 class="card-title">Visitantes Presentes</h5>
+
+                <p class="card-text">
+                    Veja os visitantes que estão atualmente presentes.
+                </p>
+
+                <a href="{{ url_for('presentes') }}"
+                   class="btn btn-success">
+                    Acessar
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+
+                <h5 class="card-title">Histórico</h5>
+
+                <p class="card-text">
+                    Consulte o histórico de entradas e saídas.
+                </p>
+
+                <a href="{{ url_for('historico') }}"
+                   class="btn btn-success">
+                    Acessar
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+
+                <h5 class="card-title">Assistente IA</h5>
+
+                <p class="card-text">
+                    Tire dúvidas sobre a utilização da plataforma.
+                </p>
+
+                <a href="{{ url_for('assistente_ia') }}"
+                   class="btn btn-success">
+                    Acessar
+                </a>
 
             </div>
         </div>

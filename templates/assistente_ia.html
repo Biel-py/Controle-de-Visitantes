@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Assistente IA{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-8">
+
+        <h1>Assistente IA</h1>
+
+        <p class="lead">
+            Tire dúvidas sobre a utilização da plataforma de Controle de Visitantes.
+        </p>
+
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    Como posso ajudar?
+                </h5>
+
+
+                <form>
+
+                    <div class="mb-3">
+
+                        <label for="pergunta" class="form-label">
+                            Digite sua pergunta:
+                        </label>
+
+                        <textarea
+                            id="pergunta"
+                            name="pergunta"
+                            class="form-control"
+                            rows="4"
+                            placeholder="Exemplo: Como registrar a entrada de um visitante?"
+                        ></textarea>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-success"
+                    >
+                        Perguntar
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <div class="card mt-4">
+
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    Resposta do Assistente
+                </h5>
+
+                <p class="card-text text-muted">
+                    A resposta da IA aparecerá aqui.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
