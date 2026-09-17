@@ -1,0 +1,234 @@
+
+{% extends "base.html" %}
+ 
+{% block title %}Início — Controle de Visitantes{% endblock %}
+ 
+{% block corpo %}
+<div class="conteudo">
+ 
+    <div class="coluna-principal">
+ 
+        <!-- Saudação -->
+        <section class="hero">
+ 
+            <div class="hero-texto">
+                <h1>Olá, <span class="destaque">Administrador!</span></h1>
+                <p>Bem-vindo ao sistema de Controle de Visitantes.</p>
+            </div>
+ 
+            <div class="hero-data">
+                <svg><use href="#i-calendario"/></svg>
+                <span>
+                    {{ data_hoje or "12 de setembro de 2025" }}<br>
+                    {{ hora_agora or "14:32" }}
+                </span>
+            </div>
+ 
+        </section>
+ 
+ 
+        <!-- Métricas -->
+        <section class="metricas">
+ 
+            <div class="metrica">
+                <div class="metrica-topo">
+                    <span class="metrica-icone"><svg><use href="#i-presentes"/></svg></span>
+                    <span class="rotulo">Total de Visitantes</span>
+                </div>
+                <div class="valor">{{ total_visitantes }}</div>
+                <div class="rodape">
+                    <span>desde o início do dia</span>
+                    <span class="variacao">&#8593; 12%</span>
+                </div>
+            </div>
+ 
+            <div class="metrica verde">
+                <div class="metrica-topo">
+                    <span class="metrica-icone"><svg><use href="#i-usuario"/></svg></span>
+                    <span class="rotulo">Presentes</span>
+                </div>
+                <div class="valor">{{ total_presentes }}</div>
+                <div class="rodape">
+                    <span>no local agora</span>
+                    <span class="variacao">&#8593; 2%</span>
+                </div>
+            </div>
+ 
+            <div class="metrica vermelha">
+                <div class="metrica-topo">
+                    <span class="metrica-icone"><svg><use href="#i-saida"/></svg></span>
+                    <span class="rotulo">Saíram</span>
+                </div>
+                <div class="valor">{{ total_sairam }}</div>
+                <div class="rodape">
+                    <span>desde o início do dia</span>
+                    <span class="variacao">&#8593; 15%</span>
+                </div>
+            </div>
+ 
+            <div class="metrica roxa">
+                <div class="metrica-topo">
+                    <span class="metrica-icone"><svg><use href="#i-calendario"/></svg></span>
+                    <span class="rotulo">Hoje</span>
+                </div>
+                <div class="valor">{{ total_hoje }}</div>
+                <div class="rodape">
+                    <span>registros no total</span>
+                    <span class="variacao">&#8593; 8%</span>
+                </div>
+            </div>
+ 
+        </section>
+ 
+ 
+        <!-- Visitantes recentes -->
+        <section class="painel">
+ 
+            <div class="painel-topo">
+ 
+                <span class="painel-titulo">
+                    <svg><use href="#i-presentes"/></svg>
+                    Visitantes recentes
+                </span>
+ 
+                <div class="painel-acoes">
+                    <div class="busca-painel">
+                        <svg><use href="#i-busca"/></svg>
+                        <input type="search" placeholder="Buscar por nome, documento ou empresa...">
+                    </div>
+ 
+                    <a href="{{ url_for('nova_entrada') }}" class="btn btn-azul">
+                        <svg><use href="#i-mais"/></svg> Novo visitante
+                    </a>
+                </div>
+ 
+            </div>
+ 
+            <div class="tabela-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Documento</th>
+                            <th>Empresa / Visitado</th>
+                            <th>Entrada</th>
+                            <th>Saída</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in visitantes %}
+                        <tr>
+                            <td>{{ v.nome }}</td>
+                            <td>{{ v.documento }}</td>
+                            <td>{{ v.pessoa_visitada }}</td>
+                            <td>{{ v.data_hora_entrada }}</td>
+                            <td>{{ v.data_hora_saida or "-" }}</td>
+                            <td>
+                                {% if v.data_hora_saida %}
+                                    <span class="status saiu">Saiu</span>
+                                {% else %}
+                                    <span class="status presente">Presente</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="col-acoes">
+                                    {% if v.data_hora_saida %}
+                                        <button class="btn btn-saida" disabled>Registrar Saída</button>
+                                    {% else %}
+                                        <form method="POST" action="{{ url_for('registrar_saida') }}">
+                                            <input type="hidden" name="visitante_id" value="{{ v.id }}">
+                                            <button type="submit" class="btn btn-saida">Registrar Saída</button>
+                                        </form>
+                                    {% endif %}
+                                    <button class="kebab" type="button">&#8942;</button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted" style="padding:28px">
+                                Nenhum visitante registrado ainda.
+                                <a href="{{ url_for('nova_entrada') }}">Registrar a primeira entrada</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+ 
+            <div class="painel-rodape">
+ 
+                <span>Mostrando {{ visitantes|length }} de {{ total_visitantes or 128 }} visitantes</span>
+ 
+                <nav class="paginacao">
+                    <a href="#">&#8249;</a>
+                    <span class="atual">1</span>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">&#8250;</a>
+                </nav>
+ 
+            </div>
+ 
+        </section>
+ 
+    </div>
+ 
+ 
+    <!-- Assistente de IA -->
+    <aside class="ia">
+ 
+        <div class="ia-topo">
+            <span class="ia-avatar"><svg><use href="#i-ia"/></svg></span>
+            <span>
+                <span class="ia-nome">Assistente de IA</span>
+                <span class="ia-online">Online</span>
+            </span>
+            <button class="ia-minimizar" type="button">&#8211;</button>
+        </div>
+ 
+        <div class="ia-corpo">
+            <div class="ia-mensagem">
+                <span class="ia-avatar"><svg><use href="#i-ia"/></svg></span>
+                <div class="bolha">
+                    Olá! &#128075;<br>
+                    Sou a assistente virtual do sistema de Controle de Visitantes.
+                    Como posso te ajudar hoje?
+                    <span class="ia-hora">{{ hora_agora or "14:32" }}</span>
+                </div>
+            </div>
+        </div>
+ 
+        <div class="ia-sugestoes">
+            <div class="titulo">Você pode perguntar:</div>
+ 
+            <form method="POST" action="{{ url_for('assistente_ia') }}">
+                <button class="ia-sugestao" name="pergunta" value="Como registrar uma entrada?">
+                    Como registrar uma entrada? <svg><use href="#i-direita"/></svg>
+                </button>
+                <button class="ia-sugestao" name="pergunta" value="Quem está presente?">
+                    Quem está presente? <svg><use href="#i-direita"/></svg>
+                </button>
+                <button class="ia-sugestao" name="pergunta" value="Como registrar uma saída?">
+                    Como registrar uma saída? <svg><use href="#i-direita"/></svg>
+                </button>
+                <button class="ia-sugestao" name="pergunta" value="Como consultar o histórico?">
+                    Como consultar o histórico? <svg><use href="#i-direita"/></svg>
+                </button>
+            </form>
+        </div>
+ 
+        <form class="ia-envio" method="POST" action="{{ url_for('assistente_ia') }}">
+            <input type="text" name="pergunta" placeholder="Digite sua pergunta...">
+            <button type="submit"><svg><use href="#i-enviar"/></svg></button>
+        </form>
+ 
+    </aside>
+ 
+</div>
+{% endblock %}
+ 

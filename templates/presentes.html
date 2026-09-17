@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Visitantes Presentes{% endblock %}
+
+{% block content %}
+
+<h1>Visitantes Presentes</h1>
+<p class="lead">
+    Lista de visitantes que estão atualmente no local.
+</p>
+
+{% if visitantes %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Documento</th>
+            <th>Pessoa Visitada</th>
+            <th>Motivo</th>
+            <th>Entrada</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for visitante in visitantes %}
+        <tr>
+            <td>{{ visitante.nome }}</td>
+            <td>{{ visitante.documento }}</td>
+            <td>{{ visitante.pessoa_visitada }}</td>
+            <td>{{ visitante.motivo }}</td>
+            <td>{{ visitante.data_hora_entrada }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="text-muted">Nenhum visitante presente no momento.</p>
+{% endif %}
+
+{% endblock %}

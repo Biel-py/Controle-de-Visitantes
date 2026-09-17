@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Histórico{% endblock %}
+
+{% block content %}
+
+<h1>Histórico</h1>
+<p class="lead">
+    Registro completo de entradas e saídas.
+</p>
+
+{% if visitantes %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Documento</th>
+            <th>Pessoa Visitada</th>
+            <th>Motivo</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for visitante in visitantes %}
+        <tr>
+            <td>{{ visitante.nome }}</td>
+            <td>{{ visitante.documento }}</td>
+            <td>{{ visitante.pessoa_visitada }}</td>
+            <td>{{ visitante.motivo }}</td>
+            <td>{{ visitante.data_hora_entrada }}</td>
+            <td>{{ visitante.data_hora_saida or "Ainda presente" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="text-muted">Nenhum registro encontrado.</p>
+{% endif %}
+
+{% endblock %}

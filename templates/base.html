@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <title>{% block title %}Controle de Visitantes{% endblock %}</title>
+ 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+ 
+    {% block extra_css %}{% endblock %}
+</head>
+ 
+<body>
+ 
+<!-- ícones reutilizáveis -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-inicio" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10h14V10"/></symbol>
+  <symbol id="i-entrada" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></symbol>
+  <symbol id="i-saida" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h8"/><path d="M17 8l4 4-4 4M21 12H10"/></symbol>
+  <symbol id="i-presentes" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M17 11.5a3 3 0 1 0-2-5.3M21 20c0-2.6-1.6-4.4-4-5"/></symbol>
+  <symbol id="i-historico" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 12a8.8 8.8 0 1 0 2.6-6.2"/><path d="M3 4v4h4"/><path d="M12 7.5V12l3 1.8"/></symbol>
+  <symbol id="i-ia" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 14h.01M15 14h.01M2 13v3M22 13v3"/></symbol>
+  <symbol id="i-config" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1 2 2 0 1 1-4 0 1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 3 15a2 2 0 1 1 0-4 1.6 1.6 0 0 0 1.1-2.7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 9.6 4.4a2 2 0 1 1 4 0 1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.6 1.6 0 0 0 20.4 11a2 2 0 1 1 0 4z"/></symbol>
+  <symbol id="i-busca" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-sino" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M10.3 20a2 2 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-usuario" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></symbol>
+  <symbol id="i-baixo" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-direita" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-calendario" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-enviar" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 10.5 13.5M21 3l-6.5 18-4-8-8-4z"/></symbol>
+  <symbol id="i-mais" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+</svg>
+ 
+<div class="app">
+ 
+    <aside class="sidebar">
+ 
+        <a class="sidebar-marca" href="{{ url_for('index') }}">
+            <span class="marca-icone"><svg><use href="#i-presentes"/></svg></span>
+            <span>Controle de<br>Visitantes</span>
+        </a>
+ 
+        <a class="nav-link {% if request.endpoint == 'index' %}ativo{% endif %}" href="{{ url_for('index') }}">
+            <svg><use href="#i-inicio"/></svg> Início
+        </a>
+ 
+        <a class="nav-link {% if request.endpoint == 'nova_entrada' %}ativo{% endif %}" href="{{ url_for('nova_entrada') }}">
+            <svg><use href="#i-entrada"/></svg> Nova Entrada
+        </a>
+ 
+        <a class="nav-link {% if request.endpoint == 'registrar_saida' %}ativo{% endif %}" href="{{ url_for('registrar_saida') }}">
+            <svg><use href="#i-saida"/></svg> Registrar Saída
+        </a>
+ 
+        <a class="nav-link {% if request.endpoint == 'presentes' %}ativo{% endif %}" href="{{ url_for('presentes') }}">
+            <svg><use href="#i-presentes"/></svg> Presentes
+        </a>
+ 
+        <a class="nav-link {% if request.endpoint == 'historico' %}ativo{% endif %}" href="{{ url_for('historico') }}">
+            <svg><use href="#i-historico"/></svg> Histórico
+        </a>
+ 
+        <a class="nav-link {% if request.endpoint == 'assistente_ia' %}ativo{% endif %}" href="{{ url_for('assistente_ia') }}">
+            <svg><use href="#i-ia"/></svg> Assistente de IA
+        </a>
+ 
+        <div class="sidebar-rodape">
+            <a class="nav-link" href="{{ url_for('index') }}">
+                <svg><use href="#i-config"/></svg> Configurações
+            </a>
+        </div>
+ 
+    </aside>
+ 
+ 
+    <div class="principal">
+ 
+        <header class="topbar">
+ 
+            <div class="busca-topo">
+                <svg><use href="#i-busca"/></svg>
+                <input type="search" placeholder="Buscar por nome, documento ou empresa...">
+                <span class="atalho">Ctrl + K</span>
+            </div>
+ 
+            <div class="topbar-direita">
+ 
+                <span class="sino">
+                    <svg><use href="#i-sino"/></svg>
+                    <span class="contador">3</span>
+                </span>
+ 
+                <span class="usuario">
+                    <span class="avatar"><svg><use href="#i-usuario"/></svg></span>
+                    Administrador
+                    <svg class="seta"><use href="#i-baixo"/></svg>
+                </span>
+ 
+            </div>
+ 
+        </header>
+ 
+        {% block corpo %}
+        <main class="conteudo simples">
+            {% block content %}{% endblock %}
+ 
+            <footer class="text-center text-muted py-4">
+                Projeto Web — Curso Técnico Desenvolvimento de Sistemas - ETEPD
+            </footer>
+        </main>
+        {% endblock %}
+ 
+    </div>
+ 
+</div>
+ 
+{% block extra_js %}{% endblock %}
+ 
+</body>
+</html>
+ 

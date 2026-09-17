@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Nova Entrada{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-8">
+
+        <h1>Nova Entrada</h1>
+        <p class="lead">
+            Registre a entrada de um novo visitante no sistema.
+        </p>
+
+        <div class="card">
+            <div class="card-body">
+
+                <form method="POST">
+
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome do visitante</label>
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            class="form-control"
+                            placeholder="Nome completo"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="documento" class="form-label">Documento</label>
+                        <input
+                            type="text"
+                            id="documento"
+                            name="documento"
+                            class="form-control"
+                            placeholder="CPF ou RG"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="pessoa_visitada" class="form-label">Pessoa visitada</label>
+                        <input
+                            type="text"
+                            id="pessoa_visitada"
+                            name="pessoa_visitada"
+                            class="form-control"
+                            placeholder="Quem o visitante irá visitar"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="motivo" class="form-label">Motivo da visita</label>
+                        <textarea
+                            id="motivo"
+                            name="motivo"
+                            class="form-control"
+                            rows="3"
+                            placeholder="Ex: reunião, entrega, visita técnica"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">
+                        Registrar Entrada
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
